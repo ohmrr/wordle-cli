@@ -20,9 +20,8 @@ async function startGame() {
 }
 
 async function wordle(tries) {
-  if (tries >= 5) {
+  if (tries >= 5)
     return console.log(chalk.red(`Sorry! The answer was ${answer}.`));
-  }
 
   const input = await prompts(inputOptions);
   const guess = input.word.toUpperCase();
