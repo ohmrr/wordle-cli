@@ -24,19 +24,26 @@ async function wordle(tries) {
   if (tries >= 5)
     return console.log(chalk.red(`Sorry! The answer was ${answer}.`));
 
-  const input = await prompts(inputOptions);
+  const input = await prompts(inputOptions);  
   const guess = input.word.toUpperCase();
 
-  if (guess === answer) {
-    return console.log(chalk.green(`You got it! The answer was ${answer}.`));
-  } else {
-    tries++;
-    check(guess);
-    wordle(tries);
-  }
+  tries++;
+  check(guess);
+  wordle(tries);
 }
 
 async function check(guess) {
+  if (guess === answer) {
+    for (let i = 0; i < guess.length; i++) {
+      process.stdout.write(' ');
+      process.stdout.write(chalk.bgGreen.white.bold(` ${guess[i]} `));
+      process.stdout.write(' ');
+    }
+
+    process.stdout.write('\n');
+    process.exit();
+  }
+
   for (let i = 0; i < guess.length; i++) {
     if (answer[i] === guess[i]) {
       process.stdout.write(' ');

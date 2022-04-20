@@ -1,7 +1,7 @@
 # Wordle-CLI
 
 I got the inspiration to make this from one of VS Code's social media accounts, I don't remember which.
-They showed off the prompts library and I decided that I would try something easier but fun.
+They showed off the prompts library and I decided that I would try to make a game for once.
 
 ## How to Use:
 
