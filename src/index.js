@@ -3,6 +3,16 @@ const answers = require('./constants/answers.json');
 const prompts = require('prompts');
 const chalk = require('chalk');
 let answer = '';
+let shareText = '';
+
+// Wordle 304 X/6
+
+// ⬛⬛⬛⬛⬛
+// ⬛⬛⬛🟩⬛
+// 🟨⬛🟨⬛⬛
+// ⬛🟨⬛⬛⬛
+// ⬛⬛⬛🟨⬛
+// ⬛⬛⬛🟨⬛
 
 const inputOptions = {
   type: 'text',
@@ -17,14 +27,18 @@ const inputOptions = {
 async function startGame() {
   answer = answers[Math.floor(Math.random() * answers.length)].toUpperCase();
   console.clear();
-  wordle(0);
+  wordle(1);
 }
 
 async function wordle(tries) {
-  if (tries >= 5)
-    return console.log(chalk.red(`Sorry! The answer was ${answer}.`));
+  if (tries > 6) {
+    shareText += '\nWordle-CLI X/6';
+    console.log(chalk.bgWhite.black.bold(` ${answer} \n`));
+    console.log(shareText);
+    return;
+  }
 
-  const input = await prompts(inputOptions);  
+  const input = await prompts(inputOptions);
   const guess = input.word.toUpperCase();
 
   tries++;
@@ -40,7 +54,10 @@ async function check(guess) {
       process.stdout.write(' ');
     }
 
-    process.stdout.write('\n');
+    process.stdout.write('\n\n');
+    shareText += '🟩🟩🟩🟩🟩\n';
+    shareText += `\nWordle-CLI ?/6`; // add num of tries later
+    console.log(shareText);
     process.exit();
   }
 
@@ -49,6 +66,7 @@ async function check(guess) {
       process.stdout.write(' ');
       process.stdout.write(chalk.bgGreen.white.bold(` ${guess[i]} `));
       process.stdout.write(' ');
+      shareText += '🟩';
       continue;
     }
 
@@ -56,14 +74,17 @@ async function check(guess) {
       process.stdout.write(' ');
       process.stdout.write(chalk.bgYellow.white.bold(` ${guess[i]} `));
       process.stdout.write(' ');
+      shareText += '🟨';
       continue;
     }
 
     process.stdout.write(' ');
     process.stdout.write(chalk.bgGray.white.bold(` ${guess[i]} `));
     process.stdout.write(' ');
+    shareText += '⬛';
   }
 
+  shareText += '\n';
   console.log('\n');
 }
 
