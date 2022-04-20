@@ -1,5 +1,5 @@
 const guesses = require('./constants/guesses.json');
-const answers = require('./constants/guesses.json');
+const answers = require('./constants/answers.json');
 const prompts = require('prompts');
 const chalk = require('chalk');
 let answer = '';
@@ -9,14 +9,14 @@ const inputOptions = {
   name: 'word',
   message: 'Enter a 5 letter word!',
   validate: (word) =>
-    word.length !== 5 || !guesses.includes(word) || !answers.includes(word)
-      ? 'Please enter a valid 5 letter word!'
+    word.length !== 5 || (!guesses.includes(word) && !answers.includes(word))
+      ? 'Please enter a 5 letter word!'
       : true,
 };
 
 async function startGame() {
   answer = answers[Math.floor(Math.random() * answers.length)].toUpperCase();
-
+  console.clear();
   wordle(0);
 }
 
