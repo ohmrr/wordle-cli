@@ -5,15 +5,6 @@ const chalk = require('chalk');
 let answer = '';
 let shareText = '';
 
-// Wordle 304 X/6
-
-// ⬛⬛⬛⬛⬛
-// ⬛⬛⬛🟩⬛
-// 🟨⬛🟨⬛⬛
-// ⬛🟨⬛⬛⬛
-// ⬛⬛⬛🟨⬛
-// ⬛⬛⬛🟨⬛
-
 const inputOptions = {
   type: 'text',
   name: 'word',
@@ -56,7 +47,7 @@ async function check(guess) {
 
     process.stdout.write('\n\n');
     shareText += '🟩🟩🟩🟩🟩\n';
-    shareText += `\nWordle-CLI ?/6`; // add num of tries later
+    shareText += `\nWordle-CLI ?/6`;
     console.log(shareText);
     process.exit();
   }
