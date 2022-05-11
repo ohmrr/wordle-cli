@@ -14,7 +14,9 @@ async function main() {
 
 async function wordle() {
   if (tries > 5) {
+    result += '\nWordle-CLI X/6';
     console.log(chalk.bgWhite.black.bold(` ${answer} \n`));
+    console.log(result);
     return;
   }
 
@@ -32,7 +34,7 @@ async function check(guess) {
       process.stdout.write(chalk.bgGreen.white.bold(` ${guess[i]} \t`));
     }
 
-    result += `🟩🟩🟩🟩🟩\n Wordle=CLI ${tries}/6`;
+    result += `🟩🟩🟩🟩🟩\n\nWordle-CLI ${tries}/6\n`;
     console.log(result);
 
     process.exit();
