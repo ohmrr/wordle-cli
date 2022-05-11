@@ -1,82 +1,62 @@
-const guesses = require('./constants/guesses.json');
 const answers = require('./constants/answers.json');
-const prompts = require('prompts');
 const chalk = require('chalk');
+const prompts = require('prompts');
+
 let answer = '';
-let shareText = '';
+let result = '';
+let tries = 0;
 
-const inputOptions = {
-  type: 'text',
-  name: 'word',
-  message: 'Enter a 5 letter word!',
-  validate: (word) =>
-    word.length !== 5 || (!guesses.includes(word) && !answers.includes(word))
-      ? 'Please enter a 5 letter word!'
-      : true,
-};
-
-async function startGame() {
+async function main() {
   answer = answers[Math.floor(Math.random() * answers.length)].toUpperCase();
-  console.clear();
-  wordle(1);
+
+  await wordle();
 }
 
-async function wordle(tries) {
-  if (tries > 6) {
-    shareText += '\nWordle-CLI X/6';
+async function wordle() {
+  if (tries > 5) {
     console.log(chalk.bgWhite.black.bold(` ${answer} \n`));
-    console.log(shareText);
     return;
   }
 
-  const input = await prompts(inputOptions);
+  const input = await prompts(require('./game-options'));
   const guess = input.word.toUpperCase();
 
   tries++;
   check(guess);
-  wordle(tries);
+  await wordle();
 }
 
 async function check(guess) {
   if (guess === answer) {
     for (let i = 0; i < guess.length; i++) {
-      process.stdout.write(' ');
-      process.stdout.write(chalk.bgGreen.white.bold(` ${guess[i]} `));
-      process.stdout.write(' ');
+      process.stdout.write(chalk.bgGreen.white.bold(` ${guess[i]} \t`));
     }
 
-    process.stdout.write('\n\n');
-    shareText += '🟩🟩🟩🟩🟩\n';
-    shareText += `\nWordle-CLI ?/6`;
-    console.log(shareText);
+    result += `🟩🟩🟩🟩🟩\n Wordle=CLI ${tries}/6`;
+    console.log(result);
+
     process.exit();
   }
 
   for (let i = 0; i < guess.length; i++) {
     if (answer[i] === guess[i]) {
-      process.stdout.write(' ');
-      process.stdout.write(chalk.bgGreen.white.bold(` ${guess[i]} `));
-      process.stdout.write(' ');
-      shareText += '🟩';
+      process.stdout.write(chalk.bgGreen.white.bold(` ${guess[i]} \t`));
+      result += '🟩';
       continue;
     }
 
     if (answer.includes(guess[i])) {
-      process.stdout.write(' ');
-      process.stdout.write(chalk.bgYellow.white.bold(` ${guess[i]} `));
-      process.stdout.write(' ');
-      shareText += '🟨';
+      process.stdout.write(chalk.bgYellow.white.bold(` ${guess[i]} \t`));
+      result += '🟨';
       continue;
     }
 
-    process.stdout.write(' ');
-    process.stdout.write(chalk.bgGray.white.bold(` ${guess[i]} `));
-    process.stdout.write(' ');
-    shareText += '⬛';
+    process.stdout.write(chalk.bgGray.white.bold(` ${guess[i]} \t`));
+    result += '⬛';
   }
 
-  shareText += '\n';
+  result += '\n';
   console.log('\n');
 }
 
-startGame();
+main();
