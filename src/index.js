@@ -28,13 +28,13 @@ async function wordle() {
   await wordle();
 }
 
-async function check(guess) {
+function check(guess) {
   if (guess === answer) {
     for (let i = 0; i < guess.length; i++) {
       process.stdout.write(chalk.bgGreen.white.bold(` ${guess[i]} \t`));
     }
 
-    result += `🟩🟩🟩🟩🟩\n\nWordle-CLI ${tries}/6\n`;
+    result += `🟩🟩🟩🟩🟩\n\nWordle-CLI ${tries}\n`;
     console.log(result);
 
     process.exit();
